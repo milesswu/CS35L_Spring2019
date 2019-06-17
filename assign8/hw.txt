@@ -1,0 +1,46 @@
+Miles Wu
+Suppose the other teams really had been observing all the bytes going
+across the network in your lab exercise. Is your resulting network
+still secure? If so, explain why, and explain whether your answer
+would change if (1) you assumed the other teams had also tapped your
+keyboards after you completed all client-server setup and had thereby
+obtained your team's keystrokes during later operation, or (2) you are
+booting off USB and you assume the other teams temporarily had
+physical control of the USB. If not, explain any weaknesses of your
+team's setups, focusing on possible attacks by such outside
+observers.
+
+Explain why the gpg2 --verify command in the following instructions
+doesn't really verify that you personally created the file in
+question. How would you go about fixing this problem?
+
+1.
+Yes, the resulting network should still be secure even if other teams
+observe the bytes being transferred across the network. The
+messages/commands being sent will still be encrypted with the public
+keys and will therefore need the private key to be decrypted. Other
+teams would not be able to get a copy of the private key by observing
+the bytes being transferred.
+
+(1) If the other team was recording out keystrokes then the messages
+being sent between machines would most likely be compromised. From
+this, other teams could determine our passphrases and any other
+sensitive information that would be transmitted through our
+keystrokes. This means that if an attacker gained access to our
+machine then they could access sensitive info. However, they would not
+be able to derive our private key from the keystrokes alone.
+
+(2) If an attacker had ontrol over the USB drive being used to boot
+our machines, then our network would most likely be compromised. The
+attackers would have access to the .ssh folder and could then access
+the private key, allowing them to decypt all of our messages.
+
+2.
+The gpg2 --verify command only checks that the signatures on the
+target file and detached signature file match, it does not verify that
+I, as the user, created the file personallly.
+
+A solution to this problem would be to post my public key to some
+third party who could then keep track of who created the key. This
+adds an extra step in the verification process that actually does
+check where the file in question came from.

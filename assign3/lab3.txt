@@ -1,0 +1,119 @@
+Miles Wu
+CS 35L Assignment 3
+
+1.
+Used wget to download coreutils-8.29 into home directory.
+Used wget to get the signature and GNU keyring for coreutils-8.29.
+Unzipped the tarball.
+Verified signature using given command.
+The warning that comes with the verify command is due to the fact that the key
+is public and therefore is not verified by the user.
+
+Shell Commands:
+wget ftp.gnu.org/gnu/coreutils/coreutils-8.29.tar.xz
+tar -xJvf coreutils-8.29.tar.xz
+wget ftp.gnu.org/gnu/gnu-keyring.gpg
+wget ftp.gnu.org/gnu/coreutils/coreutils-8.29.tar.xz.sig
+gpg --verify --keyring ./gnu-keyring.gpg coreutils-8.29.tar.xz.sig
+
+Output:
+gpg: Signature made Wed 27 Dec 2017 10:29:05 AM PST using RSA key ID 306037D9
+gpg: Good signature from "Pádraig Brady <P@draigBrady.com>"
+gpg:                 aka "Pádraig Brady <pbrady@redhat.com>"
+gpg:                 aka "Pádraig Brady <pixelbeat@gnu.org>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 6C37 DC12 121A 5006 BC1D  B804 DF6F D971 3060 37D9
+
+2.
+Created temporary directory.
+Used the ./configure command in the coreutils-8.29 directory to install
+coreutils in the temporary directory, making sure to provide an absolute path.  
+Compiled and installed using make and make install.
+Needed to use --prefix for the configure comand otherwise the make install
+command would not work in the desired way.
+
+Shell Commands:
+mkdir coreutilsInstall
+cd coreutils-8.29
+./configure --prefix=/u/eng/ugrad/milesw/coreutilsInstall
+make
+make install
+
+3.
+Tested for the bug described using /usr/bin/ls and the coreutils ls command.
+Noted that -a overrides -A no matter what ordering for both ls commands.
+
+Shell commands:
+/usr/bin/ls -a -A
+/usr/bin/ls -A -a
+cd coreutilsInstall/bin
+./ls -a -A
+./ls -A -a
+
+4.
+Copied contents of attatched patch into a patch_file inside the coreutils-8.29
+directory.
+Used the patch command to apply patches, using the -p1 option to remove the a/
+and b/ prefixes before file names.
+Received a hunk failure message regarding the NEWS file, which isn't present.
+
+Shell Commands:
+cd ~/coreutils-8.29
+emacs patch_file
+patch -p1 < patch_file
+
+5.
+Ran make to compile, received an error 'automake1.15' missing.
+Ran autoreconf -f -i to fix problem.
+Ran make again to compile changed files.
+
+Shell Commands:
+make 
+autoreconf -f -i
+make
+
+6.
+Tested modified and unmodified ls on directory with a hidden file.
+Noted that the modified ls command no longer has buggy behavior.
+Noted that unmodified ls command still produces bug.
+
+Shell Commands:
+mkdir empty
+mkdir hidden
+touch hidden/.test
+cd empty
+ls -a
+ls -A
+ls -aA
+ls -Aa
+~/coreutilsInstall/bin/ls -a
+~/coreutilsInstall/bin/ls -A
+~/coreutilsInstall/bin/ls -aA
+~/coreutilsInstall/bin/ls -Aa
+
+Output:
+ls -a:
+.  ..	.test
+
+ls -A:
+.test
+
+ls -aA:
+.test
+
+ls -Aa:
+.  ..	.test
+
+~/coreutilsInstall/bin/ls -a:
+.  ..   .test
+
+~/coreutilsInstall/bin/ls -A:
+.test
+
+~/coreutilsInstall/bin/ls -aA:
+.  ..   .test
+
+~/coreutilsInstall/bin/ls -Aa:
+.  ..   .test
+

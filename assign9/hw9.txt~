@@ -1,0 +1,123 @@
+Miles Wu
+
+1. Created hw9.txt
+Created file to record actions duing hw section.
+
+Commands:
+emacs hw9.txt
+
+2.  Check out v3.0 of Diffutils
+Checkout version 3.0 of Diffutils in new branch named 'quote'
+
+Commands:
+git checkout v3.0 -b quote
+
+3. Install changes
+Applied changes to the quote branch using the patch command with the
+quote-3.0-patch,txt file as input.
+Output indicates patch was successful.
+
+Commands:
+patch -p1 < ../quote-3.0-patch.txt
+
+Output:
+patching file src/cmp.c
+patching file src/diff.c
+patching file src/diff3.c
+patching file src/dir.c
+patching file src/sdiff.c
+patching file src/util.c
+
+4. Learn an Emacs funciton
+Looked into the documentation for the Emacs function
+add-change-log-entry-other-window.
+
+5. Create ChangeLog entry
+Created a new ChangeLog using Emacs function described in previous step.
+Contents of ChangeLog are based on log from original patch.
+
+Commands:
+emacs
+C-x 4 a
+C-x C-s
+C-x C-c
+
+6. Commit changes
+Committed changes to the new quote branch using the changelog entry as the
+commit message.
+
+Commands:
+git add .
+git commit -F ChangeLog
+
+7. Create formatted patch
+Used the format patch git command to create a formatted patch file.
+
+Commands:
+git format-patch -1 --stdout > formatted-patch.txt
+
+8. Share patch with partner
+Worked with Daniel Adea (Lab 3). Emailed patch files to one another and then
+copied the patch file onto the linux server. Applied the patch with git am.
+Built the resulting system using the same process as the lab (also described in
+README-hacking).
+Note: As I worked on lnxsrv07, I applied the additional patch supplied by the
+spec during the lab.
+Checked results using make check command and the commands used before in the lab
+section: diff --help, diff . -
+Commands generate correct output.
+
+Commands:
+cd ~/gitroot/diffutils
+git checkout v3.0 -b partner
+git am gitroot/formatted-patch.txt
+./bootstrap
+emacs add-patch.txt
+patch -p0 < add-patch.txt
+./configure
+make check
+src/diff --help
+src/diff . -
+
+9. Verify ChangeLog
+Used the make distdir command and examined the resulting created file to verify
+my partner's ChangeLog entry worked appeared. My partner's ChangeLog entry does
+in fact appear in the new directory's ChangeLog file.
+
+Commands:
+make distdir
+emacs diffutils-3.0.1-5226/ChangeLog
+
+10. Inspect Emacs repo
+Opened new connection to lnxsrv07 with X-forwarding enabled. Ran Xming for
+Windows so gitk could work. Ran gitk in the directory specified.
+Found newest commit not newer than 2015-01-25.
+
+View of mergepoint:
+Author: Trevor Murphy <trevor.m.murphy@gmail.com>  2015-01-25 23:56:37
+Committer: Katsumi Yamaoka <yamaoka@jpl.org>  2015-01-25 23:56:37
+Parent: dafb0ef852f88f535df5527def7516a13bf63c60 (* lisp/net/shr.el (shr-make-table-1): Fix colspan typo.)
+Child:  4cdde9196fb4fafb00b0c51b908fd605274147bd (* lisp/emacs-lisp/cl-generic.el: Add a method-combination hook.)
+Branches: master, remotes/origin/master and many more (122)
+Follows: emacs-24.4
+Precedes: emacs-25.0.90
+
+	  lisp/gnus/nnimap.el Allow using the Google X-GM-LABELS, if present
+
+Role of subwindows:
+Upper leftmost window shows a git history of commits in a tree form. Contains
+commits, branches, head pointer, tags, commit messages, merges, etc.
+
+Upper middle window contains each commit's author name and their corresponding
+email.
+
+Upper rightmost window shows the time and date of each commit.
+
+Middle section (seperates upper half and lower half) contains fields showing the
+commit's SHAID and the row number of currently selected ocmmit. The sectino also
+contains a search bar with many filtering options.
+
+Lower leftmost window shows the specifics of the commit. Contains author,
+committer, parent, child, cranches, commit message, changes in diff form, etc.
+
+Lower rightmost window shows the files modified by currently selected commit.

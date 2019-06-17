@@ -1,0 +1,6 @@
+2019-04-25  Miles Spencer Wu  <milesw@lnxsrv07.seas.ucla.edu>
+
+	* timespec.h (timespec_cmp): Changed implementation to use a comparison
+	of modified times instead of checking if subtraction becomes a negative
+	value.
+

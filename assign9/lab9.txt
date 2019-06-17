@@ -1,0 +1,396 @@
+Miles Wu
+
+1. Clone Diffutils repo
+Cloned repository from main Savannah repository using git clone.
+
+Commands:
+git clone https://git.savannah.gnu.org/git/diffutils.git
+
+2. Retrieve repo's log of changes
+Used the git log command to get a log of the changes made to
+Diffutils' master branch. Put the contents of this log into a
+git-log.txt file.
+
+Commmands:
+cd diffutils
+git log > git-log.txt
+
+3. Generate repo tags
+Retrieved Diffutils' tags using the git tag comand. Put the contents
+of this list into a git-tags.txt file.
+
+Commands:
+git tag > git-tags.txt
+
+4. Generate patch
+Located commit called “maint: quote 'like this' or "like this", not
+`like this'”. Copied the hash code onto clipboard and used the git
+format-patch command to create a patch file.
+
+Commands:
+emacs git-log.txt
+C-s m a i n t : SP q RET
+C-p C-p C-p C-p M-b
+C-k C-y
+C-x C-c
+git format-patch -1 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f > quote-patch.txt
+
+5. Checkout version 3.0
+Switched to branch marked by tag v3.0 using git checkout.
+
+Commands:
+git checkout v3.0 -b quote
+
+6. Apply patch
+Used the patch command in version 3.0 on the preiously craeted patch
+file to apply the patch to the branch.
+Ran into a couple of errors involving not being able to find a
+matching file to patch.
+
+Commands:
+patch -p1 < quote-patch.txt
+
+Errors:
+can't find file to patch at input line 62
+1 out of 1 hunk ignored
+Hunk #1 FAILED at 9.
+Hunk #3 FAILED at 60.
+2 out of 3 hunks FAILED -- saving rejects to file README.rej
+Hunk #1 FAILED at 19.
+1 out of 1 hunk FAILED -- saving rejects to file README-hacking.rej
+Hunk #1 FAILED at 29.
+1 out of 1 hunk FAILED -- saving rejects to file cfg.mk.rej
+can't find file to patch at input line 249
+9 out of 9 hunks ignored
+Hunk #10 FAILED at 876.
+Hunk #11 FAILED at 906.
+Hunk #12 FAILED at 942.
+3 out of 14 hunks FAILED -- saving rejects to file src/diff.c.rej
+Hunk #6 FAILED at 433.
+1 out of 9 hunks FAILED -- saving rejects to file src/diff3.c.rej
+
+7. Git Status
+Ran the git status command to see what changed after the patch was
+applied.
+
+Commands:
+git status
+
+Output:
+On branch lab
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   NEWS
+	modified:   README
+	modified:   TODO
+	modified:   doc/diagmeet.note
+	modified:   ms/config.bat
+	modified:   ms/config.site
+	modified:   po/en.po
+	modified:   src/analyze.c
+	modified:   src/cmp.c
+	modified:   src/context.c
+	modified:   src/diff.c
+	modified:   src/diff.h
+	modified:   src/diff3.c
+	modified:   src/dir.c
+	modified:   src/ifdef.c
+	modified:   src/io.c
+	modified:   src/sdiff.c
+	modified:   src/side.c
+	modified:   src/system.h
+	modified:   src/util.c
+	modified:   tests/help-version
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	NEWS.orig
+	README-hacking.orig
+	README-hacking.rej
+	README.orig
+	README.rej
+	cfg.mk.orig
+	cfg.mk.rej
+	git-log.txt
+	git-tags.txt
+	ms/config.site.orig
+	quote-patch.txt
+	src/cmp.c.orig
+	src/context.c.orig
+	src/diff.c.orig
+	src/diff.c.rej
+	src/diff.h.orig
+	src/diff3.c.orig
+	src/diff3.c.rej
+	src/dir.c.orig
+	src/sdiff.c.orig
+	src/system.h.orig
+	src/util.c.orig
+	tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+8. Learn Emacs fucnitons
+Looked into documentation for the functions listed in spec.
+
+9. Revert changes
+Used emacs funcitnos to revery chnages to all non .c files that were
+modified. These files included the following: NEWS, README, TODO,
+doc/diagmeet.note, ms/config.bat, ms/config.site, po/en.po,
+tests/help-version
+
+Commands:
+emacs NEWS
+C-x v u
+y e s RET
+C-x C-c
+
+emacs README
+C-x v u
+y e s RET
+C-x C-c
+
+emacs TODO
+C-x v u
+y e s RET
+C-x C-c
+
+emacs doc/diagmeet.note
+C-x v u
+y e s RET
+C-x C-c
+
+emacs ms/config.bat
+C-x v u
+y e s RET
+C-x C-c
+
+emacs ms/config.site
+C-x v u
+y e s RET
+C-x C-c
+
+emacs po/en.po
+C-x v u
+y e s RET
+C-x C-c
+
+emacs src/diff.h
+C-x v u
+y e s RET
+C-x C-c
+
+emacs src/system.h
+C-x v u
+y e s RET
+C-x C-c
+
+emacs tests/help-version
+C-x v u
+y e s RET
+C-x C-c
+
+Undid changes to .c files that did not have to do with modifying character
+string constants.
+3 reversions for src/analyze.c
+3 reversions for src/cmp.c
+5 reversions for src/context.c
+3 reversions for src/diff.c
+3 reversions for src/diff3.c
+3 reversions for src/dir.c
+1 reversion for src/ifdef.c
+1 reversion for src/io.c
+3 reversions for src/sdiff.c
+3 reversions for src/side.c
+7 reversions for src/util.c
+
+Commands:
+emacs src/analyze.c
+C-x v =
+C-u C-c C-a
+C-x C-c y
+
+emacs src/cmp.c
+C-x v =
+C-u C-c C-a
+C-x C-c y
+
+emacs src/context.c
+C-x v =
+C-u C-c C-a
+C-x C-c y
+
+emacs src/diff.c
+C-x v =
+C-u C-c C-a
+C-x C-c y
+
+emacs src/diff3.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+emacs src/dir.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+emacs src/ifdef.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+emacs src/io.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+emacs src/sdiff.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+emacs src/side.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+emacs src/util.c
+C-x v =
+C-u C-c C-a
+C-x C-c
+
+10. Examine rejected patches
+Used Emacs to examine the .c.rej files in the src directory: src/diff3.c.rej and
+src/diff.c.rej. Copied appropriate hunks of rejected patches int corresponding
+files by hand.
+In src/diff3.c.rej:
+One rejected patch to src/diff3.c
+In src/diff.c.reg:
+Three rejected patches to src/diff.c
+
+Commands:
+emacs src/diff3.c.rej
+C-x C-f d i f f 3 . c RET
+M-g g 4 3 3 RET
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-x C-s C-x C-c
+
+emacs src/diff.c.rej
+C-x 2 C-x o
+C-x C-f d i f f . c RET
+M-g g 870
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-s ` RET BACKSPACE '
+C-x C-s C-x C-c
+
+11. Remove untracked files
+Used git clean command to remove untracked files. Used command with -f option so
+that all untracked files are forced to be removed.
+
+Commands:
+git clean -f
+
+Output:
+Removing NEWS.orig
+Removing README-hacking.orig
+Removing README-hacking.rej
+Removing README.orig
+Removing README.rej
+Removing cfg.mk.orig
+Removing cfg.mk.rej
+Removing git-log.txt
+Removing git-tags.txt
+Removing ms/config.site.orig
+Removing quote-patch.txt
+Removing src/cmp.c.orig
+Removing src/context.c.orig
+Removing src/diff.c.orig
+Removing src/diff.c.rej
+Removing src/diff.h.orig
+Removing src/diff3.c.orig
+Removing src/diff3.c.rej
+Removing src/dir.c.orig
+Removing src/sdiff.c.orig
+Removing src/system.h.orig
+Removing src/util.c.orig
+Removing tests/help-version.orig
+
+12. Git Status Again
+Run git status as second time to check the modified files. Half a dozen files
+are indeed shown to be modified as expected.
+Then use git diff to generate a patch file with new changes. Checked that the
+patch file is within 300-400 lines long using the wc command. The resulting line
+count is 326 lines.
+
+Commands:
+git status
+git diff > quote-3.0-patch.txt
+wc -l < quote-3.0-patch.txt
+
+Git Status Output:
+On branch lab
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   src/cmp.c
+	modified:   src/diff.c
+	modified:   src/diff3.c
+	modified:   src/dir.c
+	modified:   src/sdiff.c
+	modified:   src/util.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+13. Build modified Diffutils
+Looked into thefile README-hacking to find the commands to build Diffutils.
+Found that we have to run ./bootstrap and ./configure before make.
+Was wokring on lnsrv07, therefore applied additional provided patch after
+./bootstrap and before ./configure. 
+Verified the command's functionality using the given example commands.
+
+Commands:
+emacs README-hacking
+C-x C-c
+./bootstrap
+emacs add-patch.txt
+patch -p0 < add-patch.txt
+./configure
+make
+make check
+diff . -
+diff --help
+
+14. Sanity test
+Copied contents of src directory into 'diffutils-3.0-patch' directory. Recloned
+the original diffutils into a 'diffutils-3.0' directory. Compared source code of
+Diffutils 3.0 to modified source code using newly-built diff command.
+
+Commands:
+cp -r src ../diffutils-3.0-patch
+cd ..
+git clone https://git.savannah.gnu.org/git/diffutils.git diffutils-3.0
+diffutils/src/diff -pru diffutils-3.0 diffutils-3.0-patch >quote-3.0-test.txt
+
+15. Compare diff files
+Used diff to then compare the contents of quote-3.0-test.txt and
+quote-3.0-patch.txt. Found that they are not identical, however most differences
+are innocuous and have only to do with a ` used in place of a ' or some file
+paths/names.
+
+Commands:
+diff diffutils-3.0/quote-3.0-patch.txt quote-3.0-test.txt

@@ -1,0 +1,150 @@
+Miles Wu
+
+1. Building old version of coreutils
+Used wget to download the buggy version of coreutils. Unzipped the tar
+file. Created a new directory for installation. 
+Went on to build the buggy version of coreutils by using the ./configure and
+make commands. 
+Running make produces an error mentioning conflicting types for a function
+futimens in the file utimecmp.c. This error is produced because there are two
+functions with the same name in the specified file. Attempting to run make
+install produces this same error.  
+Copied contents of patch into a patch file.
+Applied patch to coreutils directory, which patched 5 files:
+	lib/utimens.c
+	lib/utimes.h
+	src/copy.c
+	src/tee.c
+	src/touch.c
+Attempted to compile and install again, process is successful. Compilation is
+successful because changes the name of the futimens function in the utimens.h
+and utimens.c files.
+
+Shell Commands:
+tar -xzvf coreutils-with-bug.tar.gz
+mkdir coreutilsBugInstall
+cd coreutils-with-bug
+./configure --prefix=/u/eng/ugrad/milesw/coreutilsBugInstall
+make
+make install
+wget web.cs.ucla.edu/classes/spring19/cs35L/assign/coreutils.diff
+patch -p0 < coreutils.diff
+make
+make install
+
+Make Error:
+In file included from utimecmp.c:41:
+utimens.h:2:5: error: conflicting types for 'futimens'
+ int futimens (int, char const *, struct timespec const [2]);
+     ^~~~~~~~
+In file included from utimecmp.h:25,
+                 from utimecmp.c:25:
+/usr/include/sys/stat.h:373:12: note: previous declaration of 'futimens' was here
+ extern int futimens (int __fd, const struct timespec __times[2]) __THROW;
+            ^~~~~~~~
+make[3]: *** [Makefile:659: utimecmp.o] Error 1
+make[2]: *** [Makefile:414: all] Error 2
+make[1]: *** [Makefile:419: all-recursive] Error 1
+make: *** [Makefile:357: all] Error 2
+
+2. Reproducing the Bug
+Reproduce the buggy ls command as shown in the example in the spec.
+Create a temporary directory and 3 sample files.
+Run the ls -t command and observe its output to be incorrect.
+
+Shell Commands:
+tmp=$(mktemp)
+cd $tmp
+tmp=$(mktemp -d)
+cd $tmp
+touch -d '1918-11-11 11:00 GMT' wwi-armistice-cs35L
+touch now
+sleep 1
+touch now1
+~/coreutilsBugInstall/bin/ls -lt --full-time wwi-armistice-cs35L now now1
+cd
+rm -fr $tmp
+
+Output:
+-rw-r--r-- 1 milesw engugrad 0 1918-11-11 03:00:00.000000000 -0800
+wwi-armistice-cs35L 
+-rw-r--r-- 1 milesw engugrad 0 2019-04-25 18:28:32.255377732 -0700 now1
+-rw-r--r-- 1 milesw engugrad 0 2019-04-25 18:28:26.239210807 -0700 now
+
+3. Debugging and Fixing Source File
+Locate the origin of the bug by using gdb to debug. Running gdb, list all
+functions and look for one relevant to the problem: incorrect modification date
+sorting.
+Found a function suspected to handle date of modification called "compare_mtime"
+Set a breakpoint at line 2884, the location of the function declaration in ls.c
+Run the ls -lt command, step through the function call. Brought to the inside of
+a function named 'timespec_cmp' located in timespec.h that appears to compare
+the difference between the passed in objects' tv_sec fields.
+'timespec_cmp' uses a subtraction operation to compare the two times to each
+other. This could potentially be the problem since a subtraction could cause
+integer overflow given a large enough difference in time. Additionally, since
+the tv_sec field is measured relative to a specific time (Jan 1 1970), there is
+a possibility for a tv_sec value to be a large negative number, thus enabling
+the integer overflow upon subtraction.
+Quit gdb, create a copy of the source file timespec.h and edit the function.
+Change timespec_cmp to implementation to use a comparison operator instead of
+relying on a subtraction, which has obvious issues.
+Create patch file using diff command with the two versions of timespec.h
+Add a ChangeLog entry to the patch file.
+
+Commands:
+gdb ~/coreutilsBugInstall/bin/ls
+(gdb) info functions
+(gdb) run -lt
+(gdb) s
+(gdb) s
+(gdb) list
+(gdb) quit
+cp ~/coreutils-with-bug/lib/timespec.h .
+emacs timespec.h
+diff -u ~/coreutils-with-bug/lib/timespec.h timespec.h > lab4.diff
+emacs lab4.diff
+C-x 4-a
+C-x C-s C-x C-c
+
+timespec_cmp function:
+timespec_cmp (struct timespec a, struct timespec b)
+{
+  int diff = a.tv_sec - b.tv_sec;
+  return diff ? diff : a.tv_nsec - b.tv_nsec;
+}
+
+Changed timespec_cmp function:
+timespec_cmp (struct timespec a, struct timespec b)
+{
+  if ( a.tv_sec < b.tv_sec ) 
+    return -1;
+  else if ( a.tv > b.tv_sec) 
+    return 1;
+  else
+    return 0;
+}
+
+3. Reproduce Problem with SEASnet
+Create files in the example in home directory using default touch and ls
+commands as directed.
+Run SEASnet ls command and observe behavior.
+The SEASnet Linux Server ls commands shows the timestamp for
+'wwi-armistice-cs35L' as the year 2054. It appears as though the original
+timestamp for the file may be out of range of representable numbers on the
+SEASnet server. Thus, a file from far in the past is shown to be modified in the
+future. 
+
+Shell Commands:
+mkdir tmp
+cd tmp
+touch -d '1918-11-11 11:00 GMT' wwi-armistice-cs35L
+touch now
+sleep 1
+touch now1
+ls -lt --full-time wwi-armistice-cs35L now now1
+
+Output:
+-rw-r--r-- 1 milesw engugrad 0 2054-12-17 09:28:16.000000000 -0800 wwi-armistice-cs35L
+-rw-r--r-- 1 milesw engugrad 0 2019-04-25 20:15:51.457345000 -0700 now1
+-rw-r--r-- 1 milesw engugrad 0 2019-04-25 20:15:46.926925000 -0700 now

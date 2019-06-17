@@ -1,0 +1,76 @@
+Miles Wu
+
+1. Create test file
+Ensured correct version of sort was being used: version 8.31 used.
+Created a test file with the 2^24 floating point numbers (one per line)
+specified by the assignment. Did this using a pipeline of GNU commands including
+od and tr. Used -N$((2**26)) to limit the bytes read by od to 2^26 bytes which
+would produce 2^24 single-precision floats since each float is 4 bytes long.
+
+Shell Commands:
+sort --version
+od -N$((2**26)) -An -t fF -w4 -v < /dev/urandom | sed 's/e.*//g' | tr -d ' ' > floats
+
+Output:
+sort (GNU coreutils) 8.31
+Copyright (C) 2019 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and Paul Eggert.
+
+2. Testing sort
+Recorded the amount of time the sort command took to exectue on the created test
+file using the time command, injecting the output of sort into /dev/null.
+Continued testing sort by invoking the --parallel and -g options with varying
+numbers of threads on the test file.
+Sort used with less threads resulted in more real time taken but less user and
+system time taken. This makes sense because the computations are not being
+performed in parallel, lengthening real time, and at the same time less system
+calls are being used, reducing system and user time.
+
+Plain Sort
+Shell Command:
+time -p sort -g < floats > /dev/null
+
+Output:
+real 38.70
+user 198.82
+sys 0.78
+
+Sort with 1 thread
+Shell command:
+time -p sort --parallel=1 -g < floats > /dev/null
+
+Output:
+real 177.88
+user 177.54
+sys 0.33
+
+Sort with 2 threads
+Shell command:
+time -p sort --parallel=2 -g < floats > /dev/null
+
+Output:
+real 95.06
+user 180.28
+sys 0.49
+
+Sort with 4 threads
+Shell command:
+time -p sort --parallel=4 -g < floats > /dev/null
+
+Output:
+real 58.43
+user 197.35
+sys 0.61
+
+Sort with 8 threads
+Shell command:
+time -p sort --parallel=8 -g < floats > /dev/null
+
+Output:
+real 37.10
+user 199.54
+sys 0.96

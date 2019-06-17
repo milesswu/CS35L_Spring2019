@@ -1,0 +1,100 @@
+Name: Miles Wu
+1. man -k [string]
+   This command forces man to display the manual pages for all commands containing the string in the search criteria
+2.
+mv is located at: /usr/local/csbin/mv
+sh is located at: /usr/local/cs/bin/sh
+   Used the shell command whereis to find locations
+   
+3.
+ar (l): allows creation, modification, and extraction of archives
+ar (lp): allows creation and maintenance of library archives
+pr (l): converts text files for printing
+pr (lp): prints files
+tr(l): translate or delete characters
+tr (lp): translate characters
+   Used man whatis to discover -w option
+   Used whatis -w "?r" to find all two character long commands ending with 'r'
+   
+4.
+/etc/alternatives/emacs
+   Used command readlink in the /usr/bin directory to find file name of the link
+
+5.
+/usr/bin/gcc: version 4.8.5-36
+plain gcc: version 8.3.0
+/usr/bin was probably added to the directory when the server was created wheras plain gcc is probably regularly updated
+    Used the --version command to find version information
+
+6.
+set the SUID, give user execute permissions, remove other's write permisssions
+    Information found using man chmod
+
+7.
+Found 144 directories total
+First five:
+/usr/local/cs
+/usr/local/cs/src/coreutils
+/usr/local/cs/src/coreutils/RCS
+/usr/local/cs/share/info
+/usr/local/cs/share/man/man1
+    Used find /usr/local/cs -type d -mtime -29 to find modified directories in the last 4 weeks
+    Used find /usr/local/cs -type d -mtime -29 | wc -l to count number of directories found
+
+8.
+253 symbolic links in the same directory as find
+    Used whereis find to locate the directory find is located in
+    Used man find to discover the -exec options and examples of its usage
+    Used find /usr/bin -type l -exec echo links \; | uniq -c to count number of symbolic links
+
+9.
+Oldest regular file: ./tcl8.5/Tix8.4.3/bitmaps/act_fold.gif
+    Used man find to discover -printf, %T+, and %p
+    Used whatis -w *sort* to find a way to sort the lines printed
+    Ran find /usr/lib64 -type f -printf '%T+ %p/n' | sort -r to find the oldest modified file
+       
+10.
+All of locale's data is stored in an archive file at path: /usr/bin/locale/locale-archive
+    Used man localedef to get information of where locale data is stored
+    Used whereis locale to verify location of the archive file
+
+11.
+downcase-dwim
+downcase-region
+downcase-word
+    Used C-h a downcase to find all commands with downcase in their name
+
+12.
+C-M-r: Does backward incremental search for reglar expressions
+C-M-s: Performs a forward incremental search for regular expressions
+C-M-t: Interchanges two sexps; requires cursor to be between two sexps
+C-M-u: Moves cursor one level out of parentheses
+C-M-v: Scrolls "other" window; scrolls window point is not within
+    Used C-h k to get documentation of each command
+    
+13.
+C-g signals a 'quit' condition, terminating the execution of any Lisp code
+    Used C-h k C-g to find more info on C-g
+
+14.
+The yank allows you to reinsert the most recent killed text. It is invoked using C-y
+    Used C-h f yank to find more info on yank function
+
+15.
+Differences:
+ls -l
+line 1:
+< total 297844
+---
+dired
+lines 1-4:
+>   /usr/bin:
+>   total used in directory 297920 available 13081708
+>   dr-xr-xr-x.   2 root root       69632 Mar 26 13:15 .
+>   drwxr-xr-x.  15 root root        4096 May 22  2018 ..
+---
+    Used shell command diff -w to compare output files while ignoring whitespaces
+    Used shell command ls -l > filename to store output of ls -l in a file
+    Used emacs command C-x d to access dired for /usr/bin
+    Used emacs command C-x C-w to save the buffer created by dired into a file
+    

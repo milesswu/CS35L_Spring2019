@@ -1,0 +1,309 @@
+    
+    'a'ole
+    'ae
+    'ahu
+    'aina
+    'akau
+    'anakala 
+    'anake
+    'apelila
+    'apopo
+    'aukake 
+    'aumakua
+    'awa
+    'ili
+    'ili 'ili
+    'ilio
+    'iole
+    'o wai
+    'o'opu akupa
+    'o'opu alamo'o
+    'o'opu nakea
+    'o'opu naniha
+    'o'opu napili
+    'ohana
+    'ohiki
+    'okakopa 
+    'okina
+    'okole
+    'okolehao
+    'olelo
+    'olu 'olu
+    'ono
+    'opae
+    'opae ula
+    'opala
+    'opihi
+    'uhane
+    'uku
+    'ulu
+    a'u
+    ahi
+    ahiahi 
+    ahu
+    ahupua'a
+    ai
+    aia
+    aia i hea
+    akamai
+    aku
+    ali'i
+    aloalo
+    aloha 
+    ame
+    aniani
+    aokuewa
+    au
+    auinala
+    aumoe
+    aupuni
+    awa
+    awakea
+    ha'aha'a
+    ha'awina
+    ha'ule lau
+    hala
+    halau
+    hale
+    haleakala
+    halemahina
+    hana
+    hanai
+    hanau
+    hapa
+    hapai
+    hau
+    hau'oli
+    haumana
+    haumia
+    he aha
+    he'e
+    heiau
+    hele
+    hele aku
+    hele mai
+    help
+    helu
+    hema
+    hepekoma
+    hikina
+    himeni
+    hinana
+    ho'oilo
+    ho'okipa
+    ho'okupu
+    ho'olaule'a 
+    ho'olauna 'ana
+    ho'olele
+    ho'olohe
+    ho'oninau
+    ho'oponopono
+    hoahanau
+    hoaloha
+    hola
+    holoku
+    honu
+    hou
+    how
+    hui
+    hula
+    human
+    i'a
+    ianuali
+    imu
+    inehinei
+    inoa
+    ipo
+    iulai
+    iune 
+    iwi
+    ka
+    ka'i
+    kahakai
+    kahako
+    kahawai
+    kaho'olawe
+    kahu
+    kai
+    kaikamahine
+    kaikua'ana
+    kaikuahine
+    kaikunane
+    kaka
+    kakahiaka
+    kako'o
+    kakou
+    kala
+    kalani
+    kalo
+    kalua
+    kama'aina
+    kamaiki
+    kanaka
+    kanaka maoli
+    kane
+    kapu 
+    kau wela
+    kaukau
+    kawa
+    ke
+    ke akua
+    keia la
+    keiki
+    keiki hanau o ka 'aina
+    keiki kane
+    kekemapa
+    kekoa
+    kekona
+    kepakemapa
+    ki
+    ki'i
+    ki'ionioni
+    ko
+    ko'olau
+    ko'u
+    koali
+    kohala
+    kokua 
+    komohana
+    kona
+    kou
+    ku
+    ku'ai
+    kukakuka
+    kukui
+    kula
+    kuleana
+    kumu
+    kumu nui
+    kupulau
+    kupuna
+    kupuna kahiko
+    kupuna kane
+    kupuna wahine
+    la
+    la hanau
+    la noa
+    lanai
+    lani
+    lanui 
+    lapule
+    laulima
+    leka
+    lele
+    lomi lomi
+    lono
+    loulu
+    lua 
+    lua 'ole
+    ma uka 
+    ma'i
+    ma'ima'i
+    mahalo 
+    mahina
+    mahinahina
+    mai
+    mai kai
+    maika'i
+    maika'i 'ole
+    maka
+    maka aniani
+    makahiki
+    makahiki hou
+    makai 
+    makamaka
+    makana
+    makani
+    make
+    makemake
+    makua
+    makua kane
+    makuahine
+    malaki
+    malama
+    malihini
+    man
+    mana
+    mana'o
+    mano
+    maoli
+    mau
+    mei
+    mele
+    menehune
+    minuke
+    mo'olelo
+    moa
+    moana
+    moe
+    moe moe
+    moku
+    momi
+    na
+    nai'a
+    name
+    nana
+    nani
+    naupaka
+    naupaka kahakai
+    naupaka kuahiwi
+    nene
+    ninau
+    no
+    noon
+    nowemapa
+    nui
+    o'o
+    oe
+    oli
+    olohe
+    oni oni
+    ono 
+    oukou
+    owl
+    pa
+    pa'u 
+    pali
+    pane
+    paniolo
+    papa
+    pau
+    pea
+    pehea
+    pepeluali 
+    pilialo
+    pilikia
+    pilikua
+    pinao
+    pineapple
+    po
+    po'aha
+    po'akahi
+    po'akolu
+    po'alima 
+    po'alua
+    po'aono
+    pohaku
+    poho
+    pokani
+    pono
+    popopo
+    pu'u
+    pua
+    pua'a
+    pueo
+    puka
+    puka aniani
+    pule
+    pumehana
+    ua
+    wa'a
+    wahine
+    wakea
+    wapine
+    wauke
+    week
+    whale
+    who
+    wiki
+    woman

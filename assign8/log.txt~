@@ -1,0 +1,68 @@
+Miles Wu
+
+1. BeagleBone Setup
+Plugged in beaglebone
+Ensured required drivers were installed
+Used ssh to connect to BeagleBone
+Followed connmanctl steps to connect to wifi
+Found IP address using ifconfig: 10.97.85.177
+Updated apt-get database
+Installed xauth and xvfb for X11 forwarding support
+Checked whether X11 is disabled: had to install emacs and edit the
+file /etc/ssh/ssh_config
+Installed Firefox
+Ensured openssh-server and openssh-client installed
+
+Commands:
+sudo ssh debian@192.168.7.2
+connmanctl
+connmanctl> enable wifi
+connmanctl> scan wifi
+connmanctl> services
+connmanctl> agent on
+connmanctl> connect wifi_2cf7f1067932_4352333736302d77696669_managed_psk
+Passphrase? 3760ClassNet
+connmanctl> quit
+ifconfig
+sudo apt-get update
+sudo apt-get install xauth
+sudo apt-get install xvfb
+sudo apt-get install emacs
+emacs /etc/ssh/ssh_config
+sudo apt-get install firefox-esr-l10n-en-gb
+sudo apt-get install openssh-server
+sudo apt-get install openssh-client
+
+2. Server Setup
+Generated public and private keys
+Created an account for client to allow partner to ssh to my machine
+Created a .ssh directory
+Changed ownership and permission on .ssh directory
+
+Commands:
+ssh-keygen
+sudo useradd -d /home/~ -m danieladea
+sudo passwd danieladea
+cd /home/~
+sudo mkdir .ssh
+sudo chown -R danieladea .ssh
+sudo chmod 700 .ssh
+
+3. Client side
+Generated public and private keys
+Copied public key to server
+Added private key to ssh-agent
+Connected to server using server side created username and password
+Attempted to run firefox but had troulbe setting up the X forwaring,
+therefore ran some basic commmands instead
+
+Commmands:
+ssh-keygen
+ssh-copy-id -i danieladea@10.97.85.177
+ssh-add
+ssh danieladea@10.97.85.177
+exit
+ssh -X danieladea@10.97.85.177
+firefox
+mkdir test
+ls

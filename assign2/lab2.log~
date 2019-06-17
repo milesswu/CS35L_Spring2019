@@ -1,0 +1,213 @@
+Name: Miles Wu
+
+1.
+Checked for correct locale
+Shell commands:
+locale
+Output:
+LANG=en_US.UTF-8
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LC_ALL=
+
+2.
+locale did not produce correct output so set locale to standard C locale
+Shell commands:
+export LC_ALL='C'
+locale
+Output:
+LANG=en_US.UTF-8
+LC_CTYPE="C"
+LC_NUMERIC="C"
+LC_TIME="C"
+LC_COLLATE="C"
+LC_MONETARY="C"
+LC_MESSAGES="C"
+LC_PAPER="C"
+LC_NAME="C"
+LC_ADDRESS="C"
+LC_TELEPHONE="C"
+LC_MEASUREMENT="C"
+LC_IDENTIFICATION="C"
+LC_ALL=C
+
+3.
+located words file in /usr/share/dict/words and created sorted words file in
+working directory.
+Shell commands:
+cd /usr/share/dict
+cat words | sort > ~/words
+
+4.
+Used wget with assignment page URL to create text file with the HTML of the
+assignment's web page.
+Shell commands:
+wget web.cs.ucla.edu/classes/spring19/cs35L/assign/assign2.html
+cat assign2.html > assign2.html
+
+5.
+Ran the listed commands and visually/intuitively determined differences with the
+help of manual pages.
+Shell commands:
+tr -c 'A-Za-z' '[\n*]' < assign2.html
+
+tr -cs 'A-Za-z' '[\n*]' < assign2.html
+
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort
+
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u
+
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm - words
+
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm -23 - words #
+ENGLISHCHECKER 
+
+Outputs:
+tr -c 'A-Za-z' '[\n*]' : Contents of the webpage's html but every non 'A-Za-z'
+character is replaced by a newline '\n' character. This happens because the -c
+option uses the complement of the SET1 input as the set of characters to be
+translated. As a result, all characters that are not encompassed by the set
+'A-Za-z' are replaced by a newline character (the SET2 input).
+
+tr -cs 'A-Za-z' '[\n*]' : Contents of the webpage's html but every sequence of
+non 'A-Za-z' characters is replaced by a single '/n' character. This produces an
+output where every string of characters 'A-Za-z' in the html file is separated
+by a new line as opposed to previous output which had multiple new lines between
+each string of alphabet characters. This output is a result of adding on the -s
+option to the tr command. The -s option replaces each sequence of a repeated
+character, from either SET, with a single occurance of the repeated
+character. The effect of this is that there is only one occurence of any non
+'A-Za-z' (in this case, only newline characters) character in between every
+string of 'A-Za-z' characters in the output. 
+
+tr -cs 'A-Za-z' '[\n*]' | sort : All sequences of consecutive alphabet
+characters (words) separated by newline characters sorted in ASCII order,
+including multiple occurences. Different from previous output which only
+outputted these characters in the order they appeared in the text document. The
+sorted nature of the output is due to piping the output of the tr command into
+the sort command. In addition, the way the output is sorted is because we are
+operating in the 'C' locale.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u : All sequences of consecutive alphabet (A-Z
+and a-z) characters (aka words) sorted in ASCII order, excluding multiple
+occurences. Previous output printed all occurences of the same string of
+characters while this output only printed repeated strings once. This difference
+is due to the -u option for the sort command. This option outputs only the first
+occurence of identical lines in a file. 
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words : All unique lines from the
+output of previous command (words from HTML text file sorted in ASCII order) but
+not from the words file, then all unique lines from the words file, then all
+lines common to both. Different from previous output becasue it contains more
+words than those contained in the HTML text file. This output comes from the
+functionality of the comm command, which prints all the unique lines from each
+file then prints all their common lines.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words # ENGLISHCHECKER : All
+unique words (words in HTML text file but not in words file) from HTML text
+sorted in ASCII order. In other words, all words in the HTML text file that are
+not considered English words based on the words file. Different from previous
+output which contained much more information; this output was the first part of
+the previous output. This differencce is due to the addition of the -23
+options. These options result in an omission of the 2nd and 3rd parts (unique to
+2nd file and common to both files) of the original comm output, leaving only the
+unique lines in the first file to be printed as output.
+
+6.
+Retrieved HTML for "Hawaiin to English" web page.
+Shell Commands:
+wget https://www.mauimapp.com/moolelo/hwnwdshw.htm
+
+Created shell script called buildwords and implemented a series of shell
+commands that extracts all Hawaiian words from a given html file. Implemented
+buildwords line by line (testing behavior on a dummy file).
+Shell Commands:
+emacs buildwords
+
+Changed executable permissions for buildwords.
+Shell Commands:
+chmod u+x buildwords
+
+Ran buildwords on hwnwdshw.htm to construct hwords file
+Shell Commands:
+cat hwnwdshu.htm | ./buildwords.sh > hwords
+
+Used hwords to derive a HAWAIIANCHECKER shell command to check the spelling of
+Hawaiian words. Ran HAWAIIANCHECKER on hwords which reported 0 misspelled
+Hawaiian words.
+Shell Commands:
+cat hwords | tr '[:upper:]' '[:lower:]' | tr -cs "A-Za-z'" '[\n*]' | sort
+-u | comm -23 - hwords
+
+Ran HAWAIIANCHECKER on assign2.html, injecting output into separate file for
+later use. Similarly, ran ENGLISHCHECKER on assign2.html and injected output
+into a file for later use.
+Shell Commands:
+cat assign2.html | tr '[:upper:]' '[:lower:]' | tr -cs "A-Za-z'" '[\n*]' |
+sort -u | comm -23 - hwords > hmisspelled.txt
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 -
+words > emisspelled.txt
+
+Used wc commands to get total number of misspelled Hawaiian and English words.
+Shell Commands:
+wc -w emisspelled.txt
+wc -w hmisspelled.txt
+
+Ran HAWAIIANCHECKER on misspelled English words to find words that are reported
+to be misspelled in English but not in Hawaiian. Ran wc to count how many, ran
+cat to find examples of words that fit the criteria.
+Shell Commands:
+cat emisspelled.txt | tr -cs "A-Za-z'" '[\n*]' | sort -u | comm -12 -
+hwords > EnotH.txt
+wc -w EnotH.txt
+cat EnotH.txt
+
+Ran ENGLISHCHECKER on misspelled Hawaiian words to find words that are reported
+to be misspelled in Hawaiian but not in English. Ran wc to count how many, ran
+cat to find examples of words that fit the criteria.
+Shell Commands:
+cat hmisspelled | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -12 - words >
+HnotE.txt
+wc -w HnotE.txt
+cat HnotE.txt
+
+HAWAIIAINCHECKER vs ENGLISHCHECKER
+ENGLISHCHECKER misspelled word count: 84
+HAWAIIANCHECKER misspelled word count: 492
+ENGLISHCHECKER misspelled but not HAWAIIANCHECKER count: 2
+    Ex: lau, wiki
+HAWAIIANCHECKER misspelled but not ENGLISHCHECKER count: 439
+    Ex: will, all
+
+buildwords script:
+#!/bin/bash
+
+sed 's/?//g' | 
+
+sed 's/<\/\?u>//g' |
+
+tr '[:upper:]' '[:lower:]' |
+
+grep ' *<td[^>]*>[pk`mnwlhaeiou ]*</td> *' |
+
+sed 's/<[^>]*>//g' |
+
+tr '`' "'" |
+
+tr -c "pk'mnwlhaeiou" '[\n*]' |
+
+tr -d '[:blank:]' |
+
+sort -u | 
+
+sed '/^ *$/d'
