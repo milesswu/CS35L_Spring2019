@@ -56,8 +56,6 @@ handle_dir_name()
     then
 	dir="${dir:0:${#dir}-1}"
     fi
-    full=`echo $dir | sed 's/\///g'`
-    #echo "$full"
     lastComp=${dir##*/}
     isValidName "$lastComp"
     if [ "$?" == 0 ] || [ ! -d "$dir" ]

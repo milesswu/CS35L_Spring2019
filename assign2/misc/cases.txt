@@ -1,3 +1,0 @@
---2018-10-28 17:26:24--  https://raw/githubusercontent.com/bhchiang/p3/master/cases.txt
-Resolving raw (raw)... failed: Name or service not known.
-wget: unable to resolve host address ‘raw’
